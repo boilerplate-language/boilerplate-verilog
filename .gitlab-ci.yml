@@ -1,6 +1,7 @@
 stages:
   - lint
-  - publish
+  - build
+  - deploy
 
 lint-verible:
   image: ubuntu:20.04
@@ -29,7 +30,7 @@ lint-verilator:
 
 doc:
   image: node:14-slim
-  stage: publish
+  stage: build
   cache:
     paths:
       - node_modules/
@@ -41,3 +42,11 @@ doc:
     name: teroshdl-html
     paths:
       - public/
+
+pages:
+  stage: deploy
+  script:
+  - echo 'Upload all report'
+  artifacts:
+    paths:
+    - public/
