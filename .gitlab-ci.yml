@@ -19,8 +19,9 @@ lint-verible:
   script:
     - mkdir -p $REPORTS_TARGET
     - verible-verilog-lint --generate_markdown src/darkriscv/rtl/*.v > $REPORTS_TARGET/lint-report.md
-    - verible-verilog-syntax --export_json src/darkriscv/rtl/*.v > $REPORTS_TARGET/syntax-report.json
     - verible-verilog-format --inplace src/darkriscv/rtl/*.v
+    - verible-verilog-syntax src/darkriscv/rtl/*.v > $REPORTS_TARGET/syntax-report.txt
+    - verible-verilog-syntax --export_json src/darkriscv/rtl/*.v > $REPORTS_TARGET/syntax-report.json
   artifacts:
     name: verible-report
     when: always
