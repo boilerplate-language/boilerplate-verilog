@@ -12,10 +12,13 @@ jobs:
         uses: actions/checkout@v2
       - name: setup reviewdog
         uses: reviewdog/action-setup@v1
-      - name: lint verilog code
+      - name: install linter
         run: |
           sudo apt-get install verilator
-          verilator --lint-only -Wall src/**/*.v
+      - name: lint by verilator
+        run: |
+          cd src/darkriscv/rtl
+          verilator --lint-only -Wall *.v
 #       - name: lint verilog code
 #         uses: SuibianP/verilog-cleaner@v0.1.1
 #         with:
