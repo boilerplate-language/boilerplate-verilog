@@ -23,6 +23,7 @@ lint-verible:
     - verible-verilog-format --inplace src/darkriscv/rtl/*.v
   artifacts:
     name: verible-report
+    when: always
     paths:
       - $REPORTS_TARGET
 
