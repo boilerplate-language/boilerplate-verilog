@@ -16,7 +16,7 @@ lint-verilator:
   image: ubuntu:20.04
   stage: lint
   before_script:
-    - sudo apt-get install verilator
+    - apt-get install verilator
   script:
     - cd src/darkriscv/rtl
     - verilator --lint-only -Wall *.v
