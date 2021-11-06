@@ -38,6 +38,7 @@ jobs:
           sudo apt-get install verilator
       - name: lint by verilator
         working-directory: src/darkriscv/rtl
+        continue-on-error: true
         run: |
           verilator --lint-only -Wall *.v
 #   lint-verilator-as-a-cleaner:
