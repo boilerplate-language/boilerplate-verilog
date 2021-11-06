@@ -1,0 +1,63 @@
+stages:
+  - lint
+  - build
+  - deploy
+
+variables:
+  REPORTS_DIRECTORY: public/reports/
+
+lint-verible:
+  image: ubuntu:20.04
+  stage: lint
+  allow_failure: true
+  before_script:
+    - apt-get update -y
+    - apt-get install -y curl
+    - curl -L https://github.com/chipsalliance/verible/releases/download/v0.0-1735-g0d1c9364/verible-v0.0-1735-g0d1c9364-Ubuntu-20.04-focal-x86_64.tar.gz | tar xzf - -h --strip-components 1 -C /
+  variables:
+    REPORTS_TARGET: $REPORTS_DIRECTORY/verible/
+  script:
+    - mkdir -p $REPORTS_TARGET
+    - verible-verilog-lint --generate_markdown src/darkriscv/rtl/*.v > $REPORTS_TARGET/lint-report.md
+    - verible-verilog-format --inplace src/darkriscv/rtl/*.v
+    - verible-verilog-syntax src/darkriscv/rtl/*.v > $REPORTS_TARGET/syntax-report.txt
+    - verible-verilog-syntax --export_json src/darkriscv/rtl/*.v > $REPORTS_TARGET/syntax-report.json
+  artifacts:
+    name: verible-report
+    when: always
+    paths:
+      - $REPORTS_TARGET
+
+lint-verilator:
+  image: ubuntu:20.04
+  stage: lint
+  allow_failure: true
+  before_script:
+    - apt-get update -y
+    - apt-get install -y verilator
+  script:
+    - cd src/darkriscv/rtl
+    - verilator --lint-only -Wall *.v
+
+doc:
+  image: node:14-slim
+  stage: build
+  cache:
+    paths:
+      - node_modules/
+  before_script:
+    - npm ci
+  script:
+    - npm run demo:doc
+  artifacts:
+    name: teroshdl-html
+    paths:
+      - public/
+
+pages:
+  stage: deploy
+  script:
+  - echo 'Upload all report'
+  artifacts:
+    paths:
+    - public/
