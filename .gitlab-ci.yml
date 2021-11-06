@@ -5,6 +5,7 @@ stages:
 lint-verible:
   image: ubuntu:20.04
   stage: lint
+  allow_failure: true
   before_script:
     - apt-get update -y
     - apt-get install -y curl
@@ -18,6 +19,7 @@ lint-verible:
 lint-verilator:
   image: ubuntu:20.04
   stage: lint
+  allow_failure: true
   before_script:
     - apt-get update -y
     - apt-get install -y verilator
