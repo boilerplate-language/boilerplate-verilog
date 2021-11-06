@@ -7,6 +7,10 @@
   "author": "kannkyo <15080890+kannkyo@users.noreply.github.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "doc": "teroshdl-hdl-documenter -i ./src --recursive --out html --outpath public/",
+    "demo:doc": "teroshdl-hdl-documenter -i ./node_modules/teroshdl/test/examples --recursive --out html --outpath public/"
+  },
   "dependencies": {
     "teroshdl": "^2.0.3"
   }
