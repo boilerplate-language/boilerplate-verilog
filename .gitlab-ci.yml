@@ -6,7 +6,8 @@ lint-verible:
   image: ubuntu:20.04
   stage: lint
   before_script:
-    - curl -L https://github.com/chipsalliance/verible/releases/download/v0.0-1735-g0d1c9364/verible-v0.0-1735-g0d1c9364-Ubuntu-20.04-focal-x86_64.tar.gz | sudo tar xzf - -h --strip-components 1 -C /
+    - apt-get install curl
+    - curl -L https://github.com/chipsalliance/verible/releases/download/v0.0-1735-g0d1c9364/verible-v0.0-1735-g0d1c9364-Ubuntu-20.04-focal-x86_64.tar.gz | tar xzf - -h --strip-components 1 -C /
   script:
     - verible-verilog-lint *.v
     - verible-verilog-syntax *.v
