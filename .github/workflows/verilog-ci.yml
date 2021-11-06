@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: setup reviewdog
+        uses: reviewdog/action-setup@v1
+      - name: lint verilog code
+        uses: SuibianP/verilog-cleaner@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workdir: src/
