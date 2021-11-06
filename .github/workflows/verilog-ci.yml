@@ -25,4 +25,9 @@ jobs:
       - name: generate document
         uses: TerosTechnology/teroshdl-documenter-action@1.0.0
         with:
-          args: -i ./ --recursive --out html
+          args: -i ./src --recursive --out html --outpath docs/
+      - name: upload document
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: documentation-html
+          path: teroshdl_doc
