@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  lint-verible:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: install verible
+        run: |
+          curl -L https://github.com/chipsalliance/verible/releases/download/v0.0-1735-g0d1c9364/verible-v0.0-1735-g0d1c9364-Ubuntu-20.04-focal-x86_64.tar.gz | sudo tar xzf - -h --strip-components 1 -C /
+      - name: verible-verilog-lint
+        working-directory: src/darkriscv/rtl
+        continue-on-error: true
+        run: |
+          verible-verilog-lint *.v
+      - name: verible-verilog-syntax
+        working-directory: src/darkriscv/rtl
+        continue-on-error: true
+        run: |
+          verible-verilog-syntax *.v
+      - name: verible-verilog-format
+        working-directory: src/darkriscv/rtl
+        continue-on-error: true
+        run: |
+          verible-verilog-format --inplace *.v
+  lint-verilator-as-a-original-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: install verilator
+        run: |
+          sudo apt-get install verilator
+      - name: lint by verilator
+        working-directory: src/darkriscv/rtl
+        run: |
+          verilator --lint-only -Wall *.v
+#   lint-verilator-as-a-cleaner:
+#     runs-on: ubuntu-18.04 # verilog-cleaner supports only ubuntu-18.04
+#     steps:
+#       - name: checkout repository
+#         uses: actions/checkout@v2
+#       - name: setup reviewdog
+#         uses: reviewdog/action-setup@v1
+#       - name: lint verilog
+#         uses: SuibianP/verilog-cleaner@v0.1.1 # FIXME: verible DL URL is moved.
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           workdir: src/darkriscv/rtl/
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: generate document
+        uses: TerosTechnology/teroshdl-documenter-action@1.0.0
+        with:
+          args: -i ./src --recursive --out html --outpath docs/
+      - name: upload teroshdl-html
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: teroshdl-html
+          path: docs/
+      - name: deploy document to gh-pages
+        uses: crazy-max/ghaction-github-pages@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target_branch: gh-pages
+          build_dir: docs/
