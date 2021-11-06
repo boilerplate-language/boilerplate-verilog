@@ -25,13 +25,11 @@ jobs:
         working-directory: src/darkriscv/rtl
         run: |
           verible-verilog-format --inplace *.v
-  lint-verilator:
+  lint-verilator-as-a-original-job:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
-      - name: setup reviewdog
-        uses: reviewdog/action-setup@v1
       - name: install verilator
         run: |
           sudo apt-get install verilator
@@ -39,6 +37,13 @@ jobs:
         working-directory: src/darkriscv/rtl
         run: |
           verilator --lint-only -Wall *.v
+  lint-verilator-as-a-cleaner:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: setup reviewdog
+        uses: reviewdog/action-setup@v1
       - name: lint verilog
         uses: SuibianP/verilog-cleaner@v0.1.1
         with:
