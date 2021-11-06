@@ -17,3 +17,12 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workdir: src/
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: generate document
+        uses: TerosTechnology/teroshdl-documenter-action@1.0.0
+        with:
+          args: -i ./ --recursive --out html
