@@ -11,8 +11,8 @@ lint-verible:
     - curl -L https://github.com/chipsalliance/verible/releases/download/v0.0-1735-g0d1c9364/verible-v0.0-1735-g0d1c9364-Ubuntu-20.04-focal-x86_64.tar.gz | tar xzf - -h --strip-components 1 -C /
   script:
     - cd src/darkriscv/rtl
-    - verible-verilog-lint *.v
-    - verible-verilog-syntax *.v
+    - verible-verilog-lint --generate_markdown *.v > verible-verilog-lint-report.md
+    - verible-verilog-syntax --export_json *.v > verible-verilog-syntax-report.json
     - verible-verilog-format --inplace *.v
 
 lint-verilator:
