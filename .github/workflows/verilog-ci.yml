@@ -13,10 +13,14 @@ jobs:
       - name: setup reviewdog
         uses: reviewdog/action-setup@v1
       - name: lint verilog code
-        uses: SuibianP/verilog-cleaner@v0.1.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workdir: src/
+        run: |
+          sudo apt-get install verilator
+          verilator --lint-only -Wall src/**/*.v
+#       - name: lint verilog code
+#         uses: SuibianP/verilog-cleaner@v0.1.1
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           workdir: src/
   doc:
     runs-on: ubuntu-latest
     steps:
