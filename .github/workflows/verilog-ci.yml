@@ -40,18 +40,18 @@ jobs:
         working-directory: src/darkriscv/rtl
         run: |
           verilator --lint-only -Wall *.v
-  lint-verilator-as-a-cleaner:
-    runs-on: ubuntu-18.04 # verilog-cleaner supports only ubuntu-18.04
-    steps:
-      - name: checkout repository
-        uses: actions/checkout@v2
-      - name: setup reviewdog
-        uses: reviewdog/action-setup@v1
-      - name: lint verilog
-        uses: SuibianP/verilog-cleaner@v0.1.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workdir: src/darkriscv/rtl/
+#   lint-verilator-as-a-cleaner:
+#     runs-on: ubuntu-18.04 # verilog-cleaner supports only ubuntu-18.04
+#     steps:
+#       - name: checkout repository
+#         uses: actions/checkout@v2
+#       - name: setup reviewdog
+#         uses: reviewdog/action-setup@v1
+#       - name: lint verilog
+#         uses: SuibianP/verilog-cleaner@v0.1.1 # FIXME: verible DL URL is moved.
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           workdir: src/darkriscv/rtl/
   doc:
     runs-on: ubuntu-latest
     steps:
