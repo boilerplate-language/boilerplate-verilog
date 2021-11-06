@@ -13,11 +13,17 @@ jobs:
       - name: install verible
         run: |
           curl -L https://github.com/chipsalliance/verible/releases/download/v0.0-1735-g0d1c9364/verible-v0.0-1735-g0d1c9364-Ubuntu-20.04-focal-x86_64.tar.gz | sudo tar xzf - -h --strip-components 1 -C /
-      - name: lint by verible
+      - name: verible-verilog-lint
         working-directory: src/darkriscv/rtl
         run: |
           verible-verilog-lint *.v
+      - name: verible-verilog-syntax
+        working-directory: src/darkriscv/rtl
+        run: |
           verible-verilog-syntax *.v
+      - name: verible-verilog-format
+        working-directory: src/darkriscv/rtl
+        run: |
           verible-verilog-format --inplace *.v
   lint-verilator:
     runs-on: ubuntu-latest
