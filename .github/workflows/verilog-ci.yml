@@ -1,4 +1,4 @@
-name: CI
+name: verilog ci
 
 on:
   push:
